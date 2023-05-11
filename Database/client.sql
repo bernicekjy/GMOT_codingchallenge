@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `client` (
   PRIMARY KEY (`clientID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
-INSERT INTO `client` (`clientID`, `Commission`, 'GrossAmount', 'lastUpdateTime') VALUES
+INSERT INTO `client` (`clientID`, `Commission`, `GrossAmount`, `lastUpdateTime`) VALUES
 ('C001', 15, 300, '2023-03-18 21:43:02'),
 ('C002', 30, 400, '2023-03-19 20:43:02'),
 ('C003', 10, 500, '2023-03-20 22:43:02'),
