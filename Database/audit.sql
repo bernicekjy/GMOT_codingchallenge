@@ -32,14 +32,8 @@ CREATE TABLE IF NOT EXISTS `audit` (
   `approvalID` varchar(20) NOT NULL,
   `oldCommission` float NOT NULL,
   `oldGrossAmount` float NOT NULL,
-  PRIMARY KEY (`changeID`),
-  /*FOREIGN KEY clientID REFERENCES client(clientID),
-  FOREIGN KEY submitterID REFERENCES pending(submitterID),
-  FOREIGN KEY approvalID REFERENCES client(adminID),*/
+  PRIMARY KEY (`changeID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-
-INSERT INTO `audit` (`changeID`, `clientID`, `newCommission`, `newGrossAmount` , `updateTime` , `submitterID`, `approvalID`,`oldCommission`,`oldGrossAmount`) VALUES
-(),
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

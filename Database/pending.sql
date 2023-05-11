@@ -23,13 +23,13 @@ DROP TABLE IF EXISTS `pending`;
 
 DROP TABLE IF EXISTS `pending`;
 CREATE TABLE IF NOT EXISTS `pending` (
-  `submissionID` varchar(20) NOT NULL,
+  `submissionID` int NOT NULL AUTO_INCREMENT,
   `clientID` varchar(20) NOT NULL,
   `newCommission` float NOT NULL,
   `newGrossAmount` float NOT NULL,
   `submitterID` varchar(20) NOT NULL,
+  `submittedTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`submissionID`)
-  /*FOREIGN KEY submitterID REFERENCES client(clientID),*/
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

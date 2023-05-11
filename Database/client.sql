@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS `client` (
   `clientID` varchar(20) NOT NULL,
   `Commission` float NOT NULL,
   `GrossAmount` float NOT NULL,
-  `lastUpdateTime` datetime NOT NULL,
+  `lastUpdateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`clientID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
