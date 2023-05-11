@@ -125,10 +125,11 @@
                                 console.log(data.data.records);
                                 let result = data.data.records;
                                 for (let record of result) {
-                                    clientID = result.clientID;
-                                    commission = result.commission;
-                                    amount = result.grossAmount;
-                                    time = result.lastUpdateTime;
+                                    clientID = record.clientID;
+                                    commission = record.commission;
+                                    amount = record.grossAmount;
+                                    time = record.lastUpdateTime;
+                                    console.log(clientID, commission, amount, time);
                                     let row = {
                                         "clientID": clientID,
                                         "commission": commission,
