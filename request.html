@@ -39,9 +39,7 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="#">Home</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Query</a>
-                    </li>
+
                     <li class="nav-item">
                         <a class="nav-link" href="#">Request Posting</a>
                     </li>
@@ -60,7 +58,7 @@
                             <div>
                                 <h1 class="mb-5">Request Submission:</h1>
 
-                                <form id="payment-form" @submit.prevent="submitForm" sandbox="allow-same-origin">
+                                <form id="form" sandbox="allow-same-origin">
 
                                     <div class="mb-3 text-start">
                                         <label for="clientID" class="form-label">ClientID</label>
@@ -75,18 +73,25 @@
                                     </div>
                                     <div class="mb-3 text-start">
                                         <label for="grossAmount" class="form-label">New Gross Amount</label>
-                                        <input type="number" class="form-control" id="grossAmount" v-model="newGross">
+                                        <input type="number" class="form-control" id="grossAmount"
+                                            v-model="newGrossAmount">
                                     </div>
 
-                                    <button id="submit" class="btn btn-primary">
+                                    <div class="mb-3 text-start">
+                                        <label for="submitter" class="form-label">Submitter ID</label>
+                                        <input type="text" class="form-control" id="submitter" v-model="submitterID">
+                                    </div>
+                                    <div class="mb-3 text-start">
+                                        <label for="password" class="form-label">Password</label>
+                                        <input type="password" class="form-control" id="password" v-model="password">
+                                    </div>
 
-                                        <span id="button-text">Place Order</span>
+
+                                    <button type="button" class="btn btn-primary" v-on:click="createRequest()">
+
+                                        <span id="button-text">Submit</span>
                                     </button>
-                                    <div id="payment-message" class="hidden" sandbox="allow-same-origin">
-                                        <!-- Display error message to your customers here -->
-                                        {{errorMessage}}
 
-                                    </div>
                                 </form>
 
                             </div>
@@ -98,10 +103,11 @@
                     <table class="table">
                         <thead class="table-dark table-hover">
                             <tr>
-                                <th> Request ID </th>
+                                <th> Submission ID </th>
                                 <th> Client ID </th>
                                 <th> New Commission ($) </th>
                                 <th> New Gross Amount ($) </th>
+                                <th> Submitter ID </th>
                                 <th> Submitted Time </th>
                                 <th> Change Details</th>
                                 <th> Approve </th>
@@ -109,13 +115,14 @@
                         </thead>
                         <tbody>
                             <tr v-for="(row, index) in tableRequest" :key="index">
-                                <td>{{ row.requestID }}</td>
+                                <td>{{ row.submissionID }}</td>
                                 <td>{{ row.clientID }}</td>
-                                <td>{{ row.commissionRate }}</td>
-                                <td>{{ row.grossAmount }}</td>
-                                <td>{{ row.time }}</td>
-                                <td> {{row.changeDetails}} </td>
-                                <td> {{row.approved}}</td>
+                                <td>{{ row.newCommission }}</td>
+                                <td>{{ row.newGrossAmount }}</td>
+                                <td>{{ row.submitterID }}</td>
+                                <td> {{row.submittedTime}} </td>
+                                <td> {{changeDetails}} </td>
+                                <td><button @click="approve(row.submissionID)" class="btn">Approve</button></td>
                             </tr>
                         </tbody>
                     </table>
@@ -137,11 +144,93 @@
             data() {
                 return {
                     tableRequest: [],
+                    requestURL: "http://localhost:5123/pending",
+                    clientID: "",
+                    newCommission: "",
+                    newGrossAmount: "",
+                    submitterID: "",
+                    password: "",
+                    changeDetails: "Pending Approval",
                 }
             },
             methods: {
+                createRequest() {
+                    fetch(`${this.requestURL}/new`, {
+                            method: "POST",
+                            headers: {
+                                "Content-type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                "submissionID": this.submissionID,
+                                "clientID": this.clientID,
+                                "newCommission": this.newCommission,
+                                "newGrossAmount": this.newGrossAmount,
+                                "submitterID": this.submitterID,
 
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(data);
+                            result = data.data;
+                            console.log(result);
+
+                            if (data.code == 201) {
+                                this.getAllRecords();
+                            }
+                        })
+                        .catch(error => {
+                            console.log("Problem in creating record. " + error);
+                        })
+
+                },
+                getAllRecords() {
+                    const response =
+                        fetch(this.requestURL)
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(response);
+                            if (data.code === 404) {
+                                // no box in db
+                                this.message = data.message;
+                            } else {
+
+                                let result = data.data.records;
+                                for (let record of result) {
+                                    submissionID = record.submissionID;
+                                    clientID = record.clientID;
+                                    newCommission = record.newCommission;
+                                    newGrossAmount = record.newGrossAmount;
+                                    submitterID = record.submitterID;
+                                    submittedTime = record.submittedTime;
+                                    console.log(submissionID, clientID, newCommission, newGrossAmount);
+                                    let row = {
+                                        "submissionID": submissionID,
+                                        "clientID": clientID,
+                                        "newCommission": newCommission,
+                                        "newGrossAmount": newGrossAmount,
+                                        "submitterID": submitterID,
+                                        "submittedTime": submittedTime
+                                    }
+                                    this.tableRequest.push(row);
+                                    console.log(this.tableRequest);
+                                }
+                            }
+                        })
+                        .catch(error => {
+                            // Errors when calling the service; such as network error, 
+                            // service offline, etc
+                            console.log(this.message + error);
+                        });
+                },
+
+                approve(submissionID) {
+
+                }
             },
+            created() {
+                this.getAllRecords();
+            }
 
 
         }).mount('#app')

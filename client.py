@@ -1,7 +1,10 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
-from datetime import date
+
+from datetime import datetime
+import json
+from os import environ
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/client'
@@ -18,7 +21,8 @@ class Client(db.Model):
     clientID = db.Column(db.String(20), primary_key=True)
     commission = db.Column(db.Float, nullable=False)
     grossAmount = db.Column(db.Float, nullable=False)
-    lastUpdateTime = db.Column(db.Date, nullable=False)
+    lastUpdateTime = db.Column(db.DateTime, nullable=False,
+                               default=datetime.now, onupdate=datetime.now)
 
     def __intit__(self, clientID, commission, grossAmount, lastUpdateTime):
         self.clientID = clientID
