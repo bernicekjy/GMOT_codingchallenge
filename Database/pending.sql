@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS `pending` (
   `newGrossAmount` float NOT NULL,
   `submitterID` varchar(20) NOT NULL,
   PRIMARY KEY (`submissionID`)
-  FOREIGN KEY submitterID REFERENCES client(clientID),
+  /*FOREIGN KEY submitterID REFERENCES client(clientID),*/
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
