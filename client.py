@@ -61,6 +61,24 @@ def get_all(clientID):
         }
     ), 404
 
+@app.route('/submit-form', methods=['POST'])
+def submit_form():
+    clientID = request.form.get('clientID')
+    commissionDiff = request.form.get('commissionDifference')
+    grossAmountDiff = request.form.get('grossAmountDifference')
+   
+    clientFound = Client.query.filter_by(clientID=clientID).first()
+
+    if not len(clientFound):
+        return 'ClientID not found.'
+
+    if commissionDiff>clientFound.commission: #commission difference out of tolerance
+        return 'Commission difference is out of tolerance.'
+    elif grossAmountDiff>clientFound.grossAmount:
+        return 'Gross amount is out of tolerance.'
+    else:
+        return 'Successful: Commission difference and gross amount are within setup tolerance'
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
