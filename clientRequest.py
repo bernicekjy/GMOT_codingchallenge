@@ -51,12 +51,13 @@ def submit_form():
     grossAmountDiff = request.form.get('grossAmountDifference')
     clientFound = Client.query.filter_by(clientID=clientID).first()
 
-    if not len(clientFound):
+    if not (clientFound):
         ans='ClientID not found.'
+        return render_template('clientRequest.html', value=ans)
 
-    if commissionDiff>clientFound.commission: #commission difference out of tolerance
+    if float(commissionDiff)>(clientFound.commission): #commission difference out of tolerance
         ans='Commission difference is out of tolerance.'
-    elif grossAmountDiff>clientFound.grossAmount:
+    elif float(grossAmountDiff)>clientFound.grossAmount:
         ans='Gross amount is out of tolerance.'
     else:
         ans='Successful: Commission difference and gross amount are within setup tolerance'
