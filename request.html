@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- ===============================================-->
+    <!--    Stylesheets-->
+    <!-- ===============================================-->
+    <!-- <link href="../assets/css/theme.css" rel="stylesheet" />
+   <link rel="stylesheet" href="./vendors/bootstrap/bootstrap.min.js" crossorigin="anonymous"> -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+
+
+    <title>Request Posting</title>
+
+    <style>
+
+    </style>
+    <!-- Vue 3 -->
+    <script src='https://cdn.jsdelivr.net/npm/vue@3.0.2/dist/vue.global.prod.js'></script>
+</head>
+
+<!-- <body onload="checkLogin()" class="bg-default"> -->
+
+<body>
+    <!-------------------------------------------------------------- NAVBAR ---------------------------------------------------->
+    <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Trade Processing</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Query</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Request Posting</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-content" id="app">
+        <div class="header bg-gradient-primary py-7 py-lg-8">
+            <div class="container">
+                <div class="header-body text-center mb-7">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-5 col-md-6 mt-5">
+
+                            <div>
+                                <h1 class="mb-5">Request Submission:</h1>
+
+                                <form id="payment-form" @submit.prevent="submitForm" sandbox="allow-same-origin">
+
+                                    <div class="mb-3 text-start">
+                                        <label for="clientID" class="form-label">ClientID</label>
+                                        <input type="text" class="form-control" id="clientID" v-model="clientID"
+                                            aria-describedby="clientID">
+
+                                    </div>
+                                    <div class="mb-3 text-start">
+                                        <label for="commission" class="form-label">New Commission</label>
+                                        <input type="number" class="form-control" id="commission"
+                                            v-model="newCommission">
+                                    </div>
+                                    <div class="mb-3 text-start">
+                                        <label for="grossAmount" class="form-label">New Gross Amount</label>
+                                        <input type="number" class="form-control" id="grossAmount" v-model="newGross">
+                                    </div>
+
+                                    <button id="submit" class="btn btn-primary">
+
+                                        <span id="button-text">Place Order</span>
+                                    </button>
+                                    <div id="payment-message" class="hidden" sandbox="allow-same-origin">
+                                        <!-- Display error message to your customers here -->
+                                        {{errorMessage}}
+
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt--8 pb-5 m-5">
+                    <h1 class="mb-5">Pending Requests:</h1>
+                    <table class="table">
+                        <thead class="table-dark table-hover">
+                            <tr>
+                                <th> Request ID </th>
+                                <th> Client ID </th>
+                                <th> New Commission ($) </th>
+                                <th> New Gross Amount ($) </th>
+                                <th> Submitted Time </th>
+                                <th> Change Details</th>
+                                <th> Approve </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(row, index) in tableRequest" :key="index">
+                                <td>{{ row.requestID }}</td>
+                                <td>{{ row.clientID }}</td>
+                                <td>{{ row.commissionRate }}</td>
+                                <td>{{ row.grossAmount }}</td>
+                                <td>{{ row.time }}</td>
+                                <td> {{row.changeDetails}} </td>
+                                <td> {{row.approved}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+    <script>
+        const {
+            createApp
+        } = Vue
+
+        createApp({
+            data() {
+                return {
+                    tableRequest: [],
+                }
+            },
+            methods: {
+
+            },
+
+
+        }).mount('#app')
+    </script>
+
+    <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js'
+        integrity='sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM' crossorigin='anonymous'>
+    </script>
+
+</body>
+
+</html>
